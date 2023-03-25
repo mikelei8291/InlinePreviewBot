@@ -1,0 +1,18 @@
+template:
+  urls:
+    id: "{hostname}-{post_id}"
+    title: "{name} (@{username})"
+    description: "{text}"
+    message: |-
+      *{name!m}* \([@{username!m}]({user_url!m})\)
+      {timestamp!m}
+      {text!m}
+    inline_keyboard:
+      - - text: Open Link
+          url: "{url}"
+  unsupported:
+    title: Unsupported URL
+    description: If you believe this URL is valid, please report bugs at GitHub Issues
+    message: |-
+      *Unsupported URL*
+      If you believe this URL is valid, please report bugs at GitHub Issues
