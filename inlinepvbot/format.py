@@ -22,13 +22,13 @@ class Formatter(string.Formatter):
 
     async def _format_message(
         self,
-        data: dict[str, str | datetime | dict[str, tuple[str, str]] | None]
+        data: dict[str, str | datetime | dict[str, dict[str, str]] | None]
     ) -> str:
         return self.format(self.urls_template["message"], **data)
 
     async def _format_inline_keyboard(
         self,
-        data: dict[str, str | datetime | dict[str, tuple[str, str]] | None]
+        data: dict[str, str | datetime | dict[str, dict[str, str]] | None]
     ) -> InlineKeyboardMarkup:
         return InlineKeyboardMarkup([
             [InlineKeyboardButton(**{k: v.format_map(data) for k, v in col.items()}) for col in row]
@@ -37,7 +37,7 @@ class Formatter(string.Formatter):
 
     async def get_inline_query_results(
         self,
-        data: dict[str, str | datetime | dict[str, tuple[str, str]] | None]
+        data: dict[str, str | datetime | dict[str, dict[str, str]] | None]
     ) -> list[InlineQueryResultPhoto]:
         _id = self.urls_template["id"].format_map(data)
         title = self.urls_template["title"].format_map(data)
@@ -48,7 +48,7 @@ class Formatter(string.Formatter):
             return [
                 InlineQueryResultPhoto(
                     f"{_id}-{media_key}",
-                    *media,
+                    **media,
                     title=title,
                     description=description,
                     caption=message,

@@ -16,7 +16,7 @@ class Extractor:
         self.username: str = ""
         self.timestamp: datetime | None = None
         self.text: str = ""
-        self.media: dict[str, tuple[str, str]] = {}
+        self.media: dict[str, dict[str, str]] = {}
         self.url: str = ""
         self.user_url: str = ""
         raise NotImplementedError("This method should be implemented by subclasses.")

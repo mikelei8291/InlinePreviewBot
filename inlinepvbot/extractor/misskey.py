@@ -23,6 +23,13 @@ class Misskey(Extractor):
                 self.username = data["user"]["username"]
                 self.timestamp = datetime.fromisoformat(data["createdAt"])
                 self.text = data["text"]
-                self.media = {file["id"]: (file["url"], file["thumbnailUrl"]) for file in data["files"]}
+                self.media = {
+                    file["id"]: {
+                        "photo_url": file["url"],
+                        "thumb_url": file["thumbnailUrl"],
+                        "photo_width": file["properties"]["width"],
+                        "photo_height": file["properties"]["height"]
+                    } for file in data["files"]
+                }
                 self.url = f"https://{self.hostname}/notes/{self.post_id}"
                 self.user_url = f"https://{self.hostname}/@{self.username}"
