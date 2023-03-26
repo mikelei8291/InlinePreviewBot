@@ -10,15 +10,15 @@ class Extractor:
         self.temp_id = post_id
 
     async def _extract(self) -> None:
-        self.url: str = ""
-        self.name: str = ""
-        self.user_id: str = ""
-        self.username: str = ""
-        self.user_url: str = ""
         self.post_id: str = ""
+        self.user_id: str = ""
+        self.name: str = ""
+        self.username: str = ""
         self.timestamp: datetime | None = None
         self.text: str = ""
         self.media: dict[str, tuple[str, str]] = {}
+        self.url: str = ""
+        self.user_url: str = ""
         raise NotImplementedError("This method should be implemented by subclasses.")
 
     @classmethod
