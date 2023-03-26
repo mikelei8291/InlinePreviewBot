@@ -20,6 +20,9 @@ license = {file = "LICENSE"}
 [project.urls]
 repository = "https://github.com/mikelei8291/InlinePreviewBot"
 
+[project.scripts]
+inlinepvbot = "inlinepvbot.bot:main"
+
 [tool.pdm.build]
 package-dir = "inlinepvbot"
 includes = ["inlinepvbot"]

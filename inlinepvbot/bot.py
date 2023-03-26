@@ -1,3 +1,6 @@
+import asyncio
+from os import getenv
+
 from pydantic import HttpUrl, ValidationError
 from pydantic.tools import parse_obj_as
 from telebot.async_telebot import AsyncTeleBot
@@ -58,3 +61,9 @@ class InlinePreviewBot(AsyncTeleBot):
                 description=query.query
             )
         ])
+
+
+def main():
+    print("Bot running")
+    bot = InlinePreviewBot(getenv("BOT_TOKEN"))
+    asyncio.run(bot.polling())
