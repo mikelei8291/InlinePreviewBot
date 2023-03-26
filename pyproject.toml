@@ -20,6 +20,11 @@ license = {file = "LICENSE"}
 [project.urls]
 repository = "https://github.com/mikelei8291/InlinePreviewBot"
 
+[tool.pdm.build]
+package-dir = "inlinepvbot"
+includes = ["inlinepvbot"]
+source-includes = ["LICENSE", "README.md"]
+
 [build-system]
 requires = ["pdm-pep517>=1.0"]
 build-backend = "pdm.pep517.api"
