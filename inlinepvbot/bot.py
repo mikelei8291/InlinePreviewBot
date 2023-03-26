@@ -33,7 +33,7 @@ class InlinePreviewBot(AsyncTeleBot):
 
     async def inline_url(self, query: InlineQuery) -> None:
         for url_extractor in _EXTRACTORS:
-            if data := url_extractor.extract(query.query):
+            if data := await url_extractor.extract(query.query):
                 await self.answer_inline_query(
                     query.id, await self.formatter.get_inline_query_results(data), cache_time=1
                 )

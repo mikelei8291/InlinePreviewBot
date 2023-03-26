@@ -8,9 +8,8 @@ class Extractor:
     def __init__(self, hostname: str, post_id: str) -> None:
         self.hostname = hostname
         self.temp_id = post_id
-        self._extract()
 
-    def _extract(self) -> None:
+    async def _extract(self) -> None:
         self.url: str = ""
         self.name: str = ""
         self.user_id: str = ""
@@ -23,7 +22,7 @@ class Extractor:
         raise NotImplementedError("This method should be implemented by subclasses.")
 
     @classmethod
-    def _match_url(cls, url: str) -> re.Match | None:
+    async def _match_url(cls, url: str) -> re.Match | None:
         if not cls._VALID_URL:
             return None
         if "_VALID_URL_REGEX" not in cls.__dict__:
@@ -31,6 +30,8 @@ class Extractor:
         return cls._VALID_URL_REGEX.match(url)
 
     @classmethod
-    def extract(cls, url: str) -> dict[str, str | datetime | dict[str, str] | None] | None:
-        if match := cls._match_url(url):
-            return cls(match.group("hostname"), match.group("id")).__dict__
+    async def extract(cls, url: str) -> dict[str, str | datetime | dict[str, str] | None] | None:
+        if match := await cls._match_url(url):
+            extractor = cls(match.group("hostname"), match.group("id"))
+            await extractor._extract()
+            return extractor.__dict__
