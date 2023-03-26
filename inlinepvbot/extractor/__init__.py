@@ -1,1 +1,3 @@
-__all__ = []
+from .misskey import Misskey
+
+__all__ = ["Misskey"]
