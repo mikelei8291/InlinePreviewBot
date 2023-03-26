@@ -24,7 +24,6 @@ repository = "https://github.com/mikelei8291/InlinePreviewBot"
 inlinepvbot = "inlinepvbot.bot:main"
 
 [tool.pdm.build]
-package-dir = "inlinepvbot"
 includes = ["inlinepvbot"]
 source-includes = ["LICENSE", "README.md"]
 
