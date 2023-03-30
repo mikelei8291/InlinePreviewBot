@@ -35,21 +35,12 @@ class InlinePreviewBot(AsyncTeleBot):
         await self.send_message(message.chat.id, "This bot can only be used in inline mode")
 
     async def inline_url(self, query: InlineQuery) -> None:
+        data = {"url": query.query}
         for url_extractor in _EXTRACTORS:
-            if data := await url_extractor.extract(query.query):
-                await self.answer_inline_query(
-                    query.id, await self.formatter.get_inline_query_results(data), cache_time=1
-                )
-                return
-        await self.answer_inline_query(query.id, [
-            InlineQueryResultArticle(
-                "unsupported",
-                self.config["template"]["unsupported"]["title"],
-                InputTextMessageContent(self.config["template"]["unsupported"]["message"], parse_mode="MarkdownV2"),
-                url=query.query,
-                description=self.config["template"]["unsupported"]["description"]
-            )
-        ], cache_time=1)
+            if result := await url_extractor.extract(query.query):
+                data = result
+                break
+        await self.answer_inline_query(query.id, await self.formatter.get_inline_query_results(data), cache_time=1)
 
     async def inline_query_default(self, query: InlineQuery) -> None:
         response_text = "Invalid URL" if query.query else "No URL found"

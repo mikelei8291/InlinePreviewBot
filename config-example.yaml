@@ -11,8 +11,9 @@ template:
       - - text: Open Link
           url: "{url}"
   unsupported:
+    id: unsupported
     title: Unsupported URL
     description: If you believe this URL is valid, please report bugs at GitHub Issues
     message: |-
-      *Unsupported URL*
+      *Unsupported URL*: {url!m}
       If you believe this URL is valid, please report bugs at GitHub Issues
