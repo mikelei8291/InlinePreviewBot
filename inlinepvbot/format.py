@@ -38,7 +38,7 @@ class Formatter(string.Formatter):
     async def get_inline_query_results(
         self,
         data: dict[str, str | datetime | dict[str, dict[str, str]] | None]
-    ) -> list[InlineQueryResultPhoto]:
+    ) -> list[InlineQueryResultPhoto | InlineQueryResultArticle]:
         _id = self.urls_template["id"].format_map(data)
         title = self.urls_template["title"].format_map(data)
         description = self.urls_template["description"].format_map(data)
