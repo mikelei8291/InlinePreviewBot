@@ -17,3 +17,6 @@ template:
     message: |-
       *Unsupported URL*: {url!m}
       If you believe this URL is valid, please report bugs at GitHub Issues
+    inline_keyboard:
+      - - text: Report Issue
+          url: https://github.com/mikelei8291/InlinePreviewBot/issues
