@@ -1,8 +1,10 @@
 import asyncio
+import logging
 from os import getenv
 
 from pydantic import HttpUrl, ValidationError
 from pydantic.tools import parse_obj_as
+from telebot import logger
 from telebot.async_telebot import AsyncTeleBot
 from telebot.types import (
     InlineQuery, InlineQueryResultArticle, InputTextMessageContent, Message
@@ -10,6 +12,7 @@ from telebot.types import (
 
 from . import extractor
 from .config import ConfigLoader
+from .exception import ExceptionHandler
 from .extractor.base import Extractor
 from .format import Formatter
 
@@ -54,7 +57,13 @@ class InlinePreviewBot(AsyncTeleBot):
         ])
 
 
-def main():
-    print("Bot running")
-    bot = InlinePreviewBot(getenv("BOT_TOKEN"))
-    asyncio.run(bot.polling())
+def main() -> int | None:
+    logging.Formatter.default_msec_format = "%s.%03d"
+    try:
+        if not (token := getenv("BOT_TOKEN")):
+            raise RuntimeError("The BOT_TOKEN environment variable was not set")
+        bot = InlinePreviewBot(token, exception_handler=ExceptionHandler())
+        asyncio.run(bot.polling(non_stop=True))
+    except Exception as e:
+        logger.critical(e)
+        return 1

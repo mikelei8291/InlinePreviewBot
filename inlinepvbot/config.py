@@ -22,5 +22,4 @@ class ConfigLoader:
             with open(join(self.config_path, "config.yaml"), encoding="utf-8") as f:
                 return safe_load(f)
         except OSError as e:
-            print(f"Cannot open config file: {e.filename}")
-            raise
+            raise RuntimeError(f"Cannot open config file: {e.filename}") from e
