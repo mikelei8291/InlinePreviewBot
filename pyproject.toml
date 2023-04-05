@@ -2,7 +2,7 @@
 
 [project]
 name = "inlinepvbot"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Telegram bot to generate inline previews of various social networking websites."
 authors = [
     {name = "Mike Lei"},
