@@ -28,5 +28,5 @@ includes = ["inlinepvbot"]
 source-includes = ["LICENSE", "README.md"]
 
 [build-system]
-requires = ["pdm-pep517>=1.0"]
-build-backend = "pdm.pep517.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
