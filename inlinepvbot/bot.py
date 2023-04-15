@@ -1,6 +1,10 @@
+import argparse
 import asyncio
 import logging
+import traceback
+from importlib.metadata import distribution
 from os import getenv
+from pathlib import Path
 
 from pydantic import HttpUrl, ValidationError
 from pydantic.tools import parse_obj_as
@@ -20,9 +24,9 @@ _EXTRACTORS: list[Extractor] = [getattr(extractor, _class) for _class in extract
 
 
 class InlinePreviewBot(AsyncTeleBot):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, config_path: Path | None = None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.config = ConfigLoader().load()
+        self.config = ConfigLoader(config_path).load()
         self.formatter = Formatter(self.config["template"])
         self.register_message_handler(self.messages)
         self.register_inline_handler(self.inline_url, self.inline_url_filter)
@@ -58,12 +62,22 @@ class InlinePreviewBot(AsyncTeleBot):
 
 
 def main() -> int | None:
+    dist = distribution(__package__)
+    parser = argparse.ArgumentParser(description=dist.metadata["Summary"])
+    parser.add_argument("-V", "--version", action="version", version=f"{dist.name} {dist.version}")
+    runtime_options = parser.add_argument_group("runtime options")
+    runtime_options.add_argument("-c", "--config", type=Path, help="specify the path of the configuration file")
+    runtime_options.add_argument("-v", "--verbose", action="store_true", help="enable verbose logging")
+    args = parser.parse_args()
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
     logging.Formatter.default_msec_format = "%s.%03d"
     try:
         if not (token := getenv("BOT_TOKEN")):
             raise RuntimeError("The BOT_TOKEN environment variable was not set")
-        bot = InlinePreviewBot(token, exception_handler=ExceptionHandler())
+        bot = InlinePreviewBot(token, config_path=args.config, exception_handler=ExceptionHandler())
         asyncio.run(bot.polling(non_stop=True))
     except Exception as e:
         logger.critical(e)
+        logger.debug(traceback.format_exc())
         return 1
