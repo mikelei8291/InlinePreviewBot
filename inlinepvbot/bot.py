@@ -24,8 +24,9 @@ _EXTRACTORS: list[Extractor] = [getattr(extractor, _class) for _class in extract
 
 
 class InlinePreviewBot(AsyncTeleBot):
-    def __init__(self, *args, config_path: Path | None = None, **kwargs):
+    def __init__(self, *args, cache_time: int | None = None, config_path: Path | None = None, **kwargs):
         super().__init__(*args, **kwargs)
+        self.cache_time = cache_time
         self.config = ConfigLoader(config_path).load()
         self.formatter = Formatter(self.config["template"])
         self.register_message_handler(self.messages)
@@ -47,7 +48,9 @@ class InlinePreviewBot(AsyncTeleBot):
             if result := await url_extractor.extract(query.query):
                 data = result
                 break
-        await self.answer_inline_query(query.id, await self.formatter.get_inline_query_results(data), cache_time=1)
+        await self.answer_inline_query(
+            query.id, await self.formatter.get_inline_query_results(data), cache_time=self.cache_time
+        )
 
     async def inline_query_default(self, query: InlineQuery) -> None:
         response_text = "Invalid URL" if query.query else "No URL found"
@@ -58,7 +61,7 @@ class InlinePreviewBot(AsyncTeleBot):
                 InputTextMessageContent(response_text),
                 description=query.query
             )
-        ])
+        ], cache_time=self.cache_time)
 
 
 def main() -> int | None:
@@ -69,13 +72,17 @@ def main() -> int | None:
     runtime_options.add_argument("-c", "--config", type=Path, help="specify the path of the configuration file")
     runtime_options.add_argument("-v", "--verbose", action="store_true", help="enable verbose logging")
     args = parser.parse_args()
+    cache_time = None
     if args.verbose:
         logger.setLevel(logging.DEBUG)
+        cache_time = 1
     logging.Formatter.default_msec_format = "%s.%03d"
     try:
         if not (token := getenv("BOT_TOKEN")):
             raise RuntimeError("The BOT_TOKEN environment variable was not set")
-        bot = InlinePreviewBot(token, config_path=args.config, exception_handler=ExceptionHandler())
+        bot = InlinePreviewBot(
+            token, cache_time=cache_time, config_path=args.config, exception_handler=ExceptionHandler()
+        )
         asyncio.run(bot.polling(non_stop=True))
     except Exception as e:
         logger.critical(e)
