@@ -29,6 +29,7 @@ class ConfigLoader:
     def load(self) -> dict[str, Any]:
         try:
             with self.config_path.open(encoding="utf-8") as f:
+                logger.debug(f"Loading configuration file: {self.config_path}")
                 return safe_load(f)
         except OSError as e:
             raise RuntimeError(f"Cannot open config file: {e.filename}") from e

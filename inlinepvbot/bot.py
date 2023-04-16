@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import logging
+import sys
 import traceback
 from importlib.metadata import distribution
 from os import getenv
@@ -70,12 +71,18 @@ def main() -> int | None:
     parser.add_argument("-V", "--version", action="version", version=f"{dist.name} {dist.version}")
     runtime_options = parser.add_argument_group("runtime options")
     runtime_options.add_argument("-c", "--config", type=Path, help="specify the path of the configuration file")
+    runtime_options.add_argument("-q", "--quiet", action="store_true", help="disable all logging")
     runtime_options.add_argument("-v", "--verbose", action="store_true", help="enable verbose logging")
     args = parser.parse_args()
     cache_time = None
-    if args.verbose:
+    if args.quiet:
+        logging.disable()
+    elif args.verbose:
         logger.setLevel(logging.DEBUG)
+        logger.debug(f"Command line arguments: {sys.argv[1:]}")
         cache_time = 1
+    else:
+        logger.setLevel(logging.INFO)
     logging.Formatter.default_msec_format = "%s.%03d"
     try:
         if not (token := getenv("BOT_TOKEN")):
