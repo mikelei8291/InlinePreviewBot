@@ -78,7 +78,7 @@ dependencies = [
 
 [[package]]
 name = "pytelegrambotapi"
-version = "4.10.0"
+version = "4.11.0"
 summary = "Python Telegram bot api. "
 dependencies = [
     "requests",
@@ -127,7 +127,7 @@ dependencies = [
 [metadata]
 lock_version = "4.2"
 groups = ["default"]
-content_hash = "sha256:e2181b1274391111f4dba608428f5cdeba7cac63df76fb67ca4111c4ed9eed1c"
+content_hash = "sha256:4bfd699019da6b778fce7c8722d7c20d3ab93d3f4d8b94462ce95476693a8c88"
 
 [metadata.files]
 "aiohttp 3.8.4" = [
@@ -506,8 +506,8 @@ content_hash = "sha256:e2181b1274391111f4dba608428f5cdeba7cac63df76fb67ca4111c4e
     {url = "https://files.pythonhosted.org/packages/fa/c2/3df79cd00e65678fce12e59e8c95378a992a93d7b9f9510d4f1f65df1936/pydantic-1.10.7-cp311-cp311-win_amd64.whl", hash = "sha256:b4a849d10f211389502059c33332e91327bc154acc1845f375a99eca3afa802d"},
     {url = "https://files.pythonhosted.org/packages/fd/66/3da2e7c0306251435bd61ae9da52db8a00672fdf2b2db1e3efe1692f41dd/pydantic-1.10.7-cp37-cp37m-musllinux_1_1_i686.whl", hash = "sha256:950ce33857841f9a337ce07ddf46bc84e1c4946d2a3bba18f8280297157a3fd1"},
 ]
-"pytelegrambotapi 4.10.0" = [
-    {url = "https://files.pythonhosted.org/packages/23/6c/b3ece29812b43cb87c1201d635cefe4a9a1d9f3c9a59b8685f4e84c8b7d5/pyTelegramBotAPI-4.10.0.tar.gz", hash = "sha256:b620d9ab941136176ae970f2a4f5b51c199b0337ca98c9dd54d927d8bbdf28a9"},
+"pytelegrambotapi 4.11.0" = [
+    {url = "https://files.pythonhosted.org/packages/e8/49/ed91e2840cbe667b62a2507a29a9572ee776b808e4e7210b35bb86284c17/pyTelegramBotAPI-4.11.0.tar.gz", hash = "sha256:dba9184bae3bb6a56c70ad3216202cd734a63b6b508ec1b1a2f23afa399d3c47"},
 ]
 "pyyaml 6.0" = [
     {url = "https://files.pythonhosted.org/packages/02/25/6ba9f6bb50a3d4fbe22c1a02554dc670682a07c8701d1716d19ddea2c940/PyYAML-6.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:f84fbc98b019fef2ee9a1cb3ce93e3187a6df0b2538a651bfb890254ba9f90b5"},

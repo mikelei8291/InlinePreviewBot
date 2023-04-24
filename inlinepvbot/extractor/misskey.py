@@ -26,7 +26,7 @@ class Misskey(Extractor):
                 self.media = {
                     file["id"]: {
                         "photo_url": file["url"],
-                        "thumb_url": file["thumbnailUrl"],
+                        "thumbnail_url": file["thumbnailUrl"],
                         "photo_width": file["properties"]["width"],
                         "photo_height": file["properties"]["height"]
                     } for file in data["files"]
