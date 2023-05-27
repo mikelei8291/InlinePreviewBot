@@ -19,7 +19,7 @@ class Misskey(Extractor):
                 data = await res.json()
                 self.post_id = data["id"]
                 self.user_id = data["user"]["id"]
-                self.name = data["user"]["name"]
+                self.name = data["user"]["name"] or data["user"]["username"]
                 self.username = data["user"]["username"]
                 self.timestamp = datetime.fromisoformat(data["createdAt"])
                 self.text = data["text"]
