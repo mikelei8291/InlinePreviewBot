@@ -133,3 +133,6 @@ dmypy.json
 
 # PDM
 .pdm-python
+
+# Sample data files
+data/
