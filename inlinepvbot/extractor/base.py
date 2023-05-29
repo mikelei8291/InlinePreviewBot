@@ -1,24 +1,50 @@
 import re
 from datetime import datetime
+from typing import Self, TypedDict
 
 
-class Extractor:
+class Media(TypedDict):
+    photo_url: str
+    thumbnail_url: str
+    photo_width: int
+    photo_height: int
+
+
+class Metadata(TypedDict):
+    hostname: str
+    post_id: str
+    user_id: str
+    name: str
+    username: str
+    timestamp: datetime | str
+    text: str
+    media: dict[str, Media]
+    url: str
+    user_url: str
+
+
+class Extractor(dict):
     _VALID_URL: str = ""
 
-    def __init__(self, hostname: str, post_id: str) -> None:
-        self.hostname = hostname
-        self.temp_id = post_id
+    def __init__(self, metadata: Metadata) -> None:
+        super().__init__({
+            "hostname": "",
+            "post_id": "",
+            "user_id": "",
+            "name": "",
+            "username": "",
+            "timestamp": "",
+            "text": "",
+            "media": {},
+            "url": "",
+            "user_url": ""
+        })
+        for k, v in metadata.items():
+            if v is not None:
+                self[k] = v
 
-    async def _extract(self) -> None:
-        self.post_id: str = ""
-        self.user_id: str = ""
-        self.name: str = ""
-        self.username: str = ""
-        self.timestamp: datetime | None = None
-        self.text: str = ""
-        self.media: dict[str, dict[str, str]] = {}
-        self.url: str = ""
-        self.user_url: str = ""
+    @classmethod
+    async def _extract(cls, hostname: str, post_id: str) -> Metadata:
         raise NotImplementedError("This method should be implemented by subclasses.")
 
     @classmethod
@@ -30,8 +56,7 @@ class Extractor:
         return cls._VALID_URL_REGEX.match(url)
 
     @classmethod
-    async def extract(cls, url: str) -> dict[str, str | datetime | dict[str, str] | None] | None:
+    async def extract(cls, url: str) -> Self | None:
         if match := await cls._match_url(url):
-            extractor = cls(match.group("hostname"), match.group("id"))
-            await extractor._extract()
-            return extractor.__dict__
+            metadata = await cls._extract(match.group("hostname"), match.group("id"))
+            return cls(metadata)
